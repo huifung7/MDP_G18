@@ -69,7 +69,6 @@ class Main:
 			thread.start_new_thread(self.pc.startIPService, (self.pc, 1.0, finish2 ))
 			if finish1 and finish2:
 				break
-
 		thread.start_new_thread (self.ipWrite, (0.5, self.pc, self.btq))
 		thread.start_new_thread (self.ipRead,  (0.5, self.pc, self.ipq))
 		thread.start_new_thread (self.btWrite, (0.5, self.android, self.ipq))
