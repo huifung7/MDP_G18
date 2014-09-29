@@ -2,6 +2,7 @@ import serial
 
 class serialWrapper:
 	def __init__(self):
+		print "init arduino port and baud"
 		#\dev\ttyACM0 in RPi
 		self.port = '/dev/ttyACM0'
 		#depend on what arduino set for the baud rate..
@@ -9,6 +10,7 @@ class serialWrapper:
 
 	def connect(self):
 		#connect to serial socket
+		print "Connecting Serial..."
 		#sersock object name for Serial
 		self.sersock = serial.Serial (self.port, self.baud)
 		#init the connection
