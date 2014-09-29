@@ -14,8 +14,8 @@ class serialWrapper:
 		#sersock object name for Serial
 		self.sersock = serial.Serial (self.port, self.baud)
 		#init the connection
-		self.sersock.write("")
-		self.sersock.write("")
+		self.sersock.write("F")
+		self.sersock.write("B")
 		print "Serial Socket linked up"
 
 	def disconnect(self):
@@ -35,5 +35,3 @@ class serialWrapper:
 #test
 test = serialWrapper()
 test.connect()
-while True:
-	test.read()

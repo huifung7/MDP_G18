@@ -11,12 +11,16 @@ class pcWrapper:
 		self.ipSocket.bind((self.tcp_ip, self.port))
 		self.pcaddr = None
 
-	def startIPService(threadName, self, delay):
+	#def startIPService(threadName, self, delay):
+	#		print "waiting for WIFI connection..."
+	#		self.pcaddr = self.ipSocket.recvfrom(1024)[1]
+	#		print "wifi link up"
+
+	def startIPService(self):
 			print "waiting for WIFI connection..."
 			self.pcaddr = self.ipSocket.recvfrom(1024)[1]
 			print "wifi link up"
-
-
+	
 	def stopIPService(self):
 		self.ipSocket.close()
 
@@ -29,13 +33,13 @@ class pcWrapper:
 			print "Read from PC: %s" % (msg)
 			return msg
 
-#test= pcWrapper()
-#test.connect()
-#while True:
-#	input=int(raw_input("enter 0 to read or 1 to write:"))
-#	if input==0:
-#		test.read()
-#	elif input==1:
+test= pcWrapper()
+test.startIPService()
+while True:
+	input=int(raw_input("enter 0 to read or 1 to write:"))
+	if input==0:
+		test.read()
+	elif input==1:
 #		test.write(raw_input("enter msg:"))
 #	else:
 #		break

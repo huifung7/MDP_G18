@@ -66,7 +66,6 @@ class Main:
 		
 	def mainStart(self):
 		#try:
-
 		thread.start_new_thread (self.ipWrite, (0.5, self.pc, self.btq))
 		thread.start_new_thread (self.ipRead,  (0.5, self.pc, self.ipq))
 		thread.start_new_thread (self.btWrite, (0.5, self.android, self.ipq))
