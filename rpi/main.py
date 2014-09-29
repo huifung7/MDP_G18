@@ -76,8 +76,8 @@ class Main:
 			time.sleep(2.0)
 
 test = Main()
-btTime = threading.Timer(10.0, startBT())
+btTime = threading.Timer(10.0, startBT)
 btTime.start()
-ipTime = threading.Timer(10.0, startIP())
+ipTime = threading.Timer(10.0, startIP)
 ipTime.start() 
 test.mainStart()

@@ -4,6 +4,7 @@ class serialWrapper:
 	def __init__(self):
 		#\dev\ttyACM0 in RPi
 		self.port = '/dev/ttyACM0'
+		#depend on what arduino set for the baud rate..
 		self.baud = 115200
 
 	def connect(self):
@@ -13,7 +14,7 @@ class serialWrapper:
 		#init the connection
 		self.sersock.write("")
 		self.sersock.write("")
-		print "serial socket linked up"
+		print "Serial Socket linked up"
 
 	def disconnect(self):
 		self.sersock.close()
@@ -28,3 +29,9 @@ class serialWrapper:
 		print "Reading from Arduino: %s" %(msg)
 		#return the message
 		return msg
+
+#test
+test = serialWrapper()
+test.connect()
+while True:
+	test.read()
