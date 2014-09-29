@@ -1,68 +1,83 @@
-import serial
+#import serial
 import bluetooth
 import thread
 import time
 import socket
 from collections import deque
 
-from pythonBTserver import * #class is androidWrapper
-from pythonWiFiserver import * #class is pcWrapper
-#from pythonSerial_Arduino import * #class is serialWrapper
+from androidWrapper import *
+from pcWrapper import *
 
-#define functions for the settings of IPComm, SerComm, BTComm
-def setIPComm():
-	#depend on your RPi IP address 192.168.x.x
-	#either 18.1 or 18.21
-	UDP_IP = "192.168.18.21"
-	UDP_PORT = 5143
-	ipsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	
-	#re-usable port
-	ipsock.setsockopt (socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
-	ipsock.setsockopt (socket.SOL_SOCKET, socket.SO_BROADCAST,1)
-	ipsock.bind((UDP_IP, UDP_PORT))
-	data, pcaddr = ipsock.recvfrom (1024)
-	print "CONNECTED...", pcaddr
-	return ipsock, pcaddr
 
-def setSerComm():
-	#establish the connection with arduino via Serial
-	sersock = serial.Serial('/dev/ttyACM0', 115200)
-    	return sersock
-
-def setBTComm ():
-	#establish the bluetooth connection
-	#the N7 BT mac address
-	btaddr = "08:60:6E:A4:E4:D4"
-    	port = 3
-    	btsock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
-    	btsock.connect((btaddr, port))
-    	return btsock
-
-class main:
-	#define the 
+class Main:
 	def __init__(self):
-	#start init the communication: Android, Arduino and PC
 		self.android = androidWrapper()
 		self.pc = pcWrapper()
-		
-		#queue
 		self.ipq = deque([])
-		self.serq = deque([])
-		self.btq = deque([])
+		self.btq = deque ([])
 
-	def ipWrite (threadName, delay, pc, ipq):
+	def ipWrite (threadName, delay, pc, btq):
 		stop_flag = 0
 		while stop_flag == 0:
 			time.sleep (delay)
-			print "WiFi queue length: ", len(ipq)
+
+			if len(btq) >0:
+				msg = btq.popleft()
+				print "BT queue length after pop: " , len(btq)
+				pc.write(msg)
+				print "%s: %s --msg: %s" % ( threadName, time.ctime(time.time()), msg)
+
+
+	def ipRead (threadName, delay, pc, ipq):
+		stop_flag = 0
+		while stop_flag == 0:
+			time.sleep (delay)
+			msg = pc.read()
+			ipq.append(msg)
+			print "IP queue length after append: ", len(ipq)
+			print "%s: %s--msg: %s" % ( threadName, time.ctime(time.time()),msg )
+
+	def btWrite (threadName, delay, android, ipq):
+		stop_flag = 0
+		while stop_flag == 0:
+			time.sleep (delay)
 			if len(ipq) >0:
 				msg = ipq.popleft()
-				pc.write()
-				print "%s: %s --msg: %s" % (threadName, time.ctime(time.time()), msg)
+				print "IP queue length after pop: " , len(ipq)
+				android.write(msg)
+				print "%s: %s --msg: %s" % ( threadName, time.ctime(time.time()), msg)
 
-	def ipRead(threadName, delay):
+	def btRead (threadName, delay, android, btq):
 		stop_flag = 0
-		buff = 1024
 		while stop_flag == 0:
-			
+			time.sleep (delay)
+			msg = android.read()
+			btq.append(msg)
+			print "BT queue length after append: ", len(btq)
+			print "%s: %s--msg: %s" % ( threadName, time.ctime(time.time()),msg )
+
+
+
+
+
+	def mainStart(self):
+		#try:
+		finish1= False
+		finish2= False
+		while True:
+			thread.start_new_thread(self.android.startBTService, (self.android, 1.0, finish1 ))
+			thread.start_new_thread(self.pc.startIPService, (self.pc, 1.0, finish2 ))
+			if finish1 and finish2:
+				break
+
+		thread.start_new_thread (self.ipWrite, (0.5, self.pc, self.btq))
+		thread.start_new_thread (self.ipRead,  (0.5, self.pc, self.ipq))
+		thread.start_new_thread (self.btWrite, (0.5, self.android, self.ipq))
+		thread.start_new_thread (self.btRead, (0.5, self.android, self.btq))
+		#except:
+		while True:
+			time.sleep(2.0)
+
+
+test = Main()
+test.mainStart()
