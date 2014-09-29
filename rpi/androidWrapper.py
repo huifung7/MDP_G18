@@ -8,15 +8,15 @@ class androidWrapper:
 		self.client_info = None
 
 	def startBTService(self):
-        self.sBtSock = BluetoothSocket( RFCOMM )
-        self.sBtSock.bind(("", PORT_ANY))
-        self.sBtSock.listen(1)
-        advertise_service( self.sBtSock, "MDPGrp18-2", 
+        self.server_sock = BluetoothSocket( RFCOMM )
+        self.server_sock.bind(("", PORT_ANY))
+        self.server_sock.listen(1)
+        advertise_service( self.server_sock, "MDPGrp18-2", 
             service_id = self.uuid, 
             service_classes = [ self.uuid, SERIAL_PORT_CLASS ],
             profiles = [SERIAL_PORT_PROFILE],
             )
-        self.cBtsock, self.cBtInfo = self.sBtSock.accept()
+        self.client_sock, self.client_info = self.server_sock.accept()
         print "BT link up"
 
 
