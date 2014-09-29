@@ -57,16 +57,13 @@ class Main:
 			print "BT queue length after append: ", len(btq)
 			print "%s: %s--msg: %s" % ("btRead", time.ctime(time.time()),msg )
 
-
-
-
-
+	def startBT():
+			self.android.startBTService()
+	def startIP():
+		self.pc.startIPService()
+		
 	def mainStart(self):
 		#try:
-
-
-		self.android.startBTService()
-		self.pc.startIPService()
 
 		thread.start_new_thread (self.ipWrite, (0.5, self.pc, self.btq))
 		thread.start_new_thread (self.ipRead,  (0.5, self.pc, self.ipq))
@@ -76,6 +73,9 @@ class Main:
 		while True:
 			time.sleep(2.0)
 
-
 test = Main()
+btTime = Timer(10.0, startBT)
+btTime.start()
+ipTime = Timer(10.0, startIP)
+ipTime.start() 
 test.mainStart()
