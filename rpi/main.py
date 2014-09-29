@@ -13,6 +13,8 @@ class Main:
 	def __init__(self):
 		self.android = androidWrapper()
 		self.pc = pcWrapper()
+		self.android.startBTService()
+		self.pc.startIPService()
 		self.ipq = deque([])
 		self.btq = deque ([])
 
@@ -26,7 +28,6 @@ class Main:
 				print "BT queue length after pop: " , len(btq)
 				pc.write(msg)
 				print "%s: %s --msg: %s" % ( threadName, time.ctime(time.time()), msg)
-
 
 	def ipRead (threadName, delay, pc, ipq):
 		stop_flag = 0
@@ -58,13 +59,6 @@ class Main:
 
 	def mainStart(self):
 		#try:
-		finish1= False
-		finish2= False
-		while True:
-			thread.start_new_thread(self.android.startBTService, (self.android, 1.0, finish1 ))
-			thread.start_new_thread(self.pc.startIPService, (self.pc, 1.0, finish2 ))
-			if finish1 and finish2:
-				break
 		thread.start_new_thread (self.ipWrite, (0.5, self.pc, self.btq))
 		thread.start_new_thread (self.ipRead,  (0.5, self.pc, self.ipq))
 		thread.start_new_thread (self.btWrite, (0.5, self.android, self.ipq))
