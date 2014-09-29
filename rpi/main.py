@@ -56,10 +56,6 @@ class Main:
 			print "BT queue length after append: ", len(btq)
 			print "%s: %s--msg: %s" % ( threadName, time.ctime(time.time()),msg )
 
-
-
-
-
 	def mainStart(self):
 		#try:
 		finish1= False
