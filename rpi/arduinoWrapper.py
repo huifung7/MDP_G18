@@ -13,6 +13,7 @@ class arduinoWrapper:
         #self.serSock.write("")
         #self.serSock.write("")
         print "serial link up"
+		return True
 
     def stopSerialService(self):
         self.serSock.close()
@@ -27,8 +28,9 @@ class arduinoWrapper:
         return msg
 		
 test = arduinoWrapper()
-test.startSerialService()
-test.write('F')
-test.write('L')
-time.delay(0.8)
+if test.startSerialService() == True:
+	time.sleep(2)
+	test.write('F')
+	test.write('L')
+	time.sleep(0.8)
 test.stopSerialService()
