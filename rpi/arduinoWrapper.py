@@ -1,4 +1,5 @@
 import serial
+import time
 
 class arduinoWrapper:
 
@@ -9,8 +10,8 @@ class arduinoWrapper:
     def startSerialService(self):
         self.serSock = serial.Serial (self.port, self.baud)
         #init socket connection
-        self.serSock.write("")
-        self.serSock.write("")
+        #self.serSock.write("")
+        #self.serSock.write("")
         print "serial link up"
 
     def stopSerialService(self):
@@ -28,4 +29,6 @@ class arduinoWrapper:
 test = arduinoWrapper()
 test.startSerialService()
 test.write('F')
+test.write('L')
+time.delay(0.8)
 test.stopSerialService()
