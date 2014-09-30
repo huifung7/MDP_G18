@@ -17,6 +17,15 @@ class arduinoWrapper:
 		ready3[0]=True
 		#return True
 
+    def startSerialService(self):
+		print "Waiting for Serial Connection..."
+        self.serSock = serial.Serial (self.port, self.baud)
+        #init socket connection
+        #self.serSock.write("")
+        #self.serSock.write("")
+        print "Serial Connection Link Up..."
+		return True
+		
     def stopSerialService(self):
         self.serSock.close()
 
@@ -32,7 +41,7 @@ class arduinoWrapper:
         return msg
 		
 test = arduinoWrapper()
-test.startSerialService()
+if test.startSerialService() == True:
 	time.sleep(3)
 	test.write('F')
 	time.sleep(3)
