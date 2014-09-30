@@ -36,3 +36,4 @@ class serialWrapper:
 test = serialWrapper()
 test.connect()
 test.write('F')
+print "hello"
