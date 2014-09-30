@@ -16,13 +16,13 @@ class arduinoWrapper:
 		print "Serial Connection Link Up..."
 		ready3[0]=True
 		
-	def stopSerialService(self):
-		self.serSock.close()
+def stopSerialService(self):
+	self.serSock.close()
 		
-	def write(self,msg):
-		if self.serSock.getCTS() == True:
-			self.serSock.write(msg)
-			print "Write to Arduino: %s" %(msg)
+def write(self,msg):
+	if self.serSock.getCTS() == True:
+		self.serSock.write(msg)
+		print "Write to Arduino: %s" %(msg)
 			
     def read(self):
         msg = self.serSock.readline()
