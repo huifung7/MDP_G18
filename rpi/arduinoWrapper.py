@@ -7,30 +7,38 @@ class arduinoWrapper:
         self.port = '/dev/ttyACM0'
         self.baud = 115200
 
-    def startSerialService(self):
+    def startSerialService(self, delay, ready3):
+		print "Waiting for Serial Connection..."
         self.serSock = serial.Serial (self.port, self.baud)
         #init socket connection
         #self.serSock.write("")
         #self.serSock.write("")
-        print "serial link up"
-		return True
+        print "Serial Connection Link Up..."
+		ready3[0]=True
+		#return True
 
     def stopSerialService(self):
         self.serSock.close()
 
     def write(self,msg):
-        self.serSock.write(msg)
-        print "Write to Arduino: %s" %(msg)
+		if self.serSock.getCTS() == True:
+			self.serSock.write(msg)
+			print "Write to Arduino: %s" %(msg)
 
     def read(self):
         msg = self.serSock.readline()
+		print "%s" %(self.serSock.inWaiting())
         print "Read from Arduino: %s" %(msg)
         return msg
 		
 test = arduinoWrapper()
-if test.startSerialService() == True:
-	time.sleep(2)
+test.startSerialService()
+	time.sleep(3)
 	test.write('F')
+	time.sleep(3)
+	test.read()
+	time.sleep(3)
 	test.write('L')
-	time.sleep(0.8)
+	test.read()
+	time.sleep(3)
 test.stopSerialService()

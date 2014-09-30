@@ -66,24 +66,26 @@ class Main:
 			print "%s: %s--msg: %s" % ("serialRead", time.ctime(time.time()),msg )
 	
 	def serialRead(self, delay, arduino, ipq, btq):
-	stop_flag = 0
-	while stop_flag == 0:
-		time.sleep(delay)
-		#if arduino.read() !=None:
-		msg = arduino.read()
-		btq.append(msg)
-		ipq.append(msg)
-		print "BT queue length after append: ", len(btq)
-		print "IP queue length after append: ", len(ipq)
-		print "%s: %s--msg: %s" % ("serialRead", time.ctime(time.time()),msg )
+		stop_flag = 0
+		while stop_flag == 0:
+			time.sleep(delay)
+			#if arduino.read() !=None:
+			msg = arduino.read()
+			btq.append(msg)
+			ipq.append(msg)
+			print "BT queue length after append: ", len(btq)
+			print "IP queue length after append: ", len(ipq)
+			print "%s: %s--msg: %s" % ("serialRead", time.ctime(time.time()),msg )
 
 	def startServices(self):
 		ready1=[False]
 		ready2=[False]
+		ready3=[False]
 		thread.start_new_thread(self.android.startBTService, (1.0,ready1))
 		thread.start_new_thread(self.pc.startIPService, (1.0,ready2))
+		thread.start_new_thread(self.arduino.startSerialService, (1.0,ready3))
 		while True:
-			if ready1[0]!=True or ready2[0]!=True:
+			if ready1[0]!=True or ready2[0]!=True or ready3[0]!=True:
 				pass
 			else:
 				print "break off"
@@ -96,6 +98,8 @@ class Main:
 		thread.start_new_thread (self.ipRead,  (0.5, self.pc, self.ipq))
 		thread.start_new_thread (self.btWrite, (0.5, self.android, self.ipq))
 		thread.start_new_thread (self.btRead,  (0.5, self.android, self.btq))
+		thread.start_new_thread (self.serialWrite, (0.5, self.arduino, self.serialq))
+		thread.start_new_thread (self.serialRead,  (0.5, self.arduino, self.ipq, self.btq))
 		#except:
 		while True:
 			time.sleep(4.0)
