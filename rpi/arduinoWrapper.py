@@ -25,10 +25,10 @@ class arduinoWrapper:
 		#self.serSock.write("")
 		print "Serial Connection Link Up..."
 		return True
-'''		
-    def stopSerialService(self):
-        self.serSock.close()
-
+'''
+	def stopSerialService(self):
+		self.serSock.close()
+		
     def write(self,msg):
 		if self.serSock.getCTS() == True:
 			self.serSock.write(msg)
