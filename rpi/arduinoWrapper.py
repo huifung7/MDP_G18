@@ -11,9 +11,9 @@ class arduinoWrapper:
 		print "Waiting for Serial Connection..."
 		self.serSock = serial.Serial (self.port, self.baud)
         #init socket connection
-        #self.serSock.write("")
-        #self.serSock.write("")
-        print "Serial Connection Link Up..."
+		#self.serSock.write("")
+		#self.serSock.write("")
+		print "Serial Connection Link Up..."
 		ready3[0]=True
 
 '''
