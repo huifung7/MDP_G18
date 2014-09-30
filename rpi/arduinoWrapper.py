@@ -23,7 +23,7 @@ def write(self,msg):
 	if self.serSock.getCTS() == True:
 		self.serSock.write(msg)
 		print "Write to Arduino: %s" %(msg)
-			
+
     def read(self):
         msg = self.serSock.readline()
 		print "%s" %(self.serSock.inWaiting())
