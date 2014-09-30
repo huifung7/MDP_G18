@@ -26,7 +26,6 @@ class Main:
 				pc.write(msg)
 				print "%s: %s --msg: %s" % ("ipWrite", time.ctime(time.time()), msg)
 
-
 	def ipRead (self, delay, pc, ipq):
 		stop_flag = 0
 		while stop_flag == 0:
@@ -57,9 +56,26 @@ class Main:
 			print "BT queue length after append: ", len(btq)
 			print "%s: %s--msg: %s" % ("btRead", time.ctime(time.time()),msg )
 
-	def serialWrite(self, delay):
+	def serialWrite(self, delay, arduino, serialq):
 		stop_flag = 0
-
+		while stop_flag == 0:
+			time.sleep(delay)
+			msg = arduino.read()
+			serialq.append(msg)
+			print "Serial queue length after append: ", len(serialq)
+			print "%s: %s--msg: %s" % ("serialRead", time.ctime(time.time()),msg )
+	
+	def serialRead(self, delay, arduino, ipq, btq):
+	stop_flag = 0
+	while stop_flag == 0:
+		time.sleep(delay)
+		#if arduino.read() !=None:
+		msg = arduino.read()
+		btq.append(msg)
+		ipq.append(msg)
+		print "BT queue length after append: ", len(btq)
+		print "IP queue length after append: ", len(ipq)
+		print "%s: %s--msg: %s" % ("serialRead", time.ctime(time.time()),msg )
 
 	def startServices(self):
 		ready1=[False]
