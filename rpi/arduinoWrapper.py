@@ -6,7 +6,7 @@ class arduinoWrapper:
     def __init__(self):
         self.port = '/dev/ttyACM0'
         self.baud = 115200
-
+'''
     def startSerialService(self, delay, ready3):
 		print "Waiting for Serial Connection..."
 		self.serSock = serial.Serial (self.port, self.baud)
@@ -16,14 +16,14 @@ class arduinoWrapper:
         print "Serial Connection Link Up..."
 		ready3[0]=True
 		#return True
-
+'''
     def startSerialService(self):
 		print "Waiting for Serial Connection..."
-        self.serSock = serial.Serial (self.port, self.baud)
-        #init socket connection
-        #self.serSock.write("")
-        #self.serSock.write("")
-        print "Serial Connection Link Up..."
+		self.serSock = serial.Serial (self.port, self.baud)
+		#init socket connection
+		#self.serSock.write("")
+		#self.serSock.write("")
+		print "Serial Connection Link Up..."
 		return True
 		
     def stopSerialService(self):
