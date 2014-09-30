@@ -4,7 +4,7 @@ import time
 class arduinoWrapper:
 
 	def __init__(self):
-	self.port = '/dev/ttyACM0'
+		self.port = '/dev/ttyACM0'
 		self.baud = 115200
 		
     def startSerialService(self, delay, ready3):
