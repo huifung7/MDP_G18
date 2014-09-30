@@ -59,18 +59,20 @@ class Main:
 	def serialWrite(self, delay, arduino, serialq):
 		stop_flag = 0
 		while stop_flag == 0:
-			time.sleep(delay)
-			msg = arduino.read()
-			serialq.append(msg)
-			print "Serial queue length after append: ", len(serialq)
-			print "%s: %s--msg: %s" % ("serialRead", time.ctime(time.time()),msg )
+			if len(serialq) > 0:
+				msg = serialq.popleft()
+				time.sleep(delay)
+				arduino.write(msg)
+				print "Serial queue length after append: ", len(serialq)
+				print "%s: %s--msg: %s" % ("serialRead", time.ctime(time.time()),msg )
 	
 	def serialRead(self, delay, arduino, ipq, btq):
 		stop_flag = 0
 		while stop_flag == 0:
 			time.sleep(delay)
-			#if arduino.read() !=None:
+			#if arduino.read() !=None: #check for empty string/char when reading.
 			msg = arduino.read()
+			#append the msg to both bluetooth queue and ip queue
 			btq.append(msg)
 			ipq.append(msg)
 			print "BT queue length after append: ", len(btq)
