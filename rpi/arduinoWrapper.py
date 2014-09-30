@@ -9,7 +9,7 @@ class arduinoWrapper:
 
     def startSerialService(self, delay, ready3):
 		print "Waiting for Serial Connection..."
-        self.serSock = serial.Serial (self.port, self.baud)
+		self.serSock = serial.Serial (self.port, self.baud)
         #init socket connection
         #self.serSock.write("")
         #self.serSock.write("")
