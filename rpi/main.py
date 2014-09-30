@@ -1,28 +1,25 @@
-#import serial
-import threading
-import bluetooth
 import thread
-import time
-import socket
-from collections import deque
 
+from collections import deque
 from androidWrapper import *
 from pcWrapper import *
-
+from arduinoWrapper import *
 
 class Main:
 
 	def __init__(self):
 		self.android = androidWrapper()
 		self.pc = pcWrapper()
+		self.arduino = arduinoWrapper()
+
 		self.ipq = deque([])
 		self.btq = deque([])
+		self.serialq = deque([])
 
 	def ipWrite (self, delay, pc, btq):
 		stop_flag = 0
 		while stop_flag == 0:
 			time.sleep (delay)
-
 			if len(btq) >0:
 				msg = btq.popleft()
 				print "BT queue length after pop: " , len(btq)
@@ -34,6 +31,7 @@ class Main:
 		stop_flag = 0
 		while stop_flag == 0:
 			time.sleep (delay)
+			#if pc.read()!=None:
 			msg = pc.read()
 			ipq.append(msg)
 			print "IP queue length after append: ", len(ipq)
@@ -53,30 +51,40 @@ class Main:
 		stop_flag = 0
 		while stop_flag == 0:
 			time.sleep (delay)
+			#if android.read()!=None:
 			msg = android.read()
 			btq.append(msg)
 			print "BT queue length after append: ", len(btq)
 			print "%s: %s--msg: %s" % ("btRead", time.ctime(time.time()),msg )
 
-	def startBT():
-		self.android.startBTService()
-		
-	def startIP():
-		self.pc.startIPService()
-		
+	def serialWrite(self, delay):
+		stop_flag = 0
+
+
+	def startServices(self):
+		ready1=[False]
+		ready2=[False]
+		thread.start_new_thread(self.android.startBTService, (1.0,ready1))
+		thread.start_new_thread(self.pc.startIPService, (1.0,ready2))
+		while True:
+			if ready1[0]!=True or ready2[0]!=True:
+				pass
+			else:
+				print "break off"
+				time.sleep(3)
+				break
+
 	def mainStart(self):
-		#try:
+		print "entering mainStart"
 		thread.start_new_thread (self.ipWrite, (0.5, self.pc, self.btq))
 		thread.start_new_thread (self.ipRead,  (0.5, self.pc, self.ipq))
 		thread.start_new_thread (self.btWrite, (0.5, self.android, self.ipq))
-		thread.start_new_thread (self.btRead, (0.5, self.android, self.btq))
+		thread.start_new_thread (self.btRead,  (0.5, self.android, self.btq))
 		#except:
 		while True:
-			time.sleep(2.0)
+			time.sleep(4.0)
+
 
 test = Main()
-btTime = threading.Timer(10.0, startBT)
-btTime.start()
-ipTime = threading.Timer(10.0, startIP)
-ipTime.start() 
+test.startServices()
 test.mainStart()
