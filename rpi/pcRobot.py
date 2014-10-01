@@ -15,7 +15,6 @@ pcWrap.startIPService()
 serWrap.startSerialService()
 print "PC and Serial Connection UP..."
 
-
 while 1:
 	#pc give command to arduino move
 	msg = pcWrap.read()
