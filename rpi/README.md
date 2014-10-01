@@ -1,4 +1,0 @@
-mdp
-===
-
-for course project

@@ -10,13 +10,12 @@ class androidWrapper:
 		self.client_info = None
 		self.server_sock.listen(1)
 		self.port = self.server_sock.getsockname()[1]
-		advertise_service( self.server_sock, "MDPGrp18",
-				   service_id= self.uuid,
-				   service_classes= [self.uuid, SERIAL_PORT_CLASS],
-				   profiles= [SERIAL_PORT_PROFILE],
-				  )
+		advertise_service( self.server_sock, "MDPGrp18-2",
+		service_id= self.uuid,
+		service_classes= [self.uuid, SERIAL_PORT_CLASS],
+		profiles= [SERIAL_PORT_PROFILE],)
 
-	def startBTService(self, ready1):
+	def startBTService(self, delay, ready1):
 			print "waiting for connection on RFCOMM channel %d" % (self.port)
 			self.client_sock, self.client_info = self.server_sock.accept()
 			print "Accepted connection from ", self.client_info
@@ -28,12 +27,12 @@ class androidWrapper:
 
 	def write(self,msg):
 		self.client_sock.send(msg)
-		#print "Write to Android: %s" %(msg)
+		print "Write to Android: %s" %(msg)
 
 	def read(self):
 		if self.client_sock is not None:
 			msg = self.client_sock.recv(1024)
-			#print "Read from Android: %s" %(msg)
+			print "Read from Android: %s" %(msg)
 			return msg
 		else:
 			return None
