@@ -10,7 +10,7 @@ class androidWrapper:
 		self.client_info = None
 		self.server_sock.listen(1)
 		self.port = self.server_sock.getsockname()[1]
-		advertise_service( self.server_sock, "MDPGrp18",
+		advertise_service( self.server_sock, "MDPGrp18-2",
 				   service_id= self.uuid,
 				   service_classes= [self.uuid, SERIAL_PORT_CLASS],
 				   profiles= [SERIAL_PORT_PROFILE],

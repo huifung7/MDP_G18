@@ -3,7 +3,7 @@ import time
 
 class pcWrapper:
 	def __init__(self):
-		self.tcp_ip = "192.168.18.1"
+		self.tcp_ip = "192.168.18.21"
 		self.port = 5143
 		self.ipSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		self.ipSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
