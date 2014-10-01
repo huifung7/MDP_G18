@@ -6,13 +6,12 @@ class arduinoWrapper:
 		self.baud = 9600
 		self.translation = {'FORWARD':'F', 'LEFT':'L', 'RIGHT':'R', 'STOP':'B'}
 
-	def startSerialService(self, ready3):
+	def startSerialService(self):
 		self.serSock = serial.Serial(self.port, self.baud)
 		#init socket connection
 		self.serSock.write("")
 		self.serSock.write("")
 		print "serial link up"
-		ready3[0]=True
 
 	def stopSerialService(self):
 		self.serSock.close()

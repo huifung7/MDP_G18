@@ -2,65 +2,57 @@ import thread
 import time
 import serial
 
-from interface import *
-from pc_interface import *
-from android_interface import *
-from arduino_interface import *
+from pcWrapper import *
+from androidWrapper import *
+from arduinoWrapper import *
 from collections import deque
 
-wifi = pc_interface()
-ser = arduino_interface()
-bt = android_interface()
+pcWrap = pcWrapper()
+serWrap = arduinoWrapper()
+btWrap = androidWrapper()
 
-bt.connect()
-wifi.connect()
-ser.connect()
-print "All connections up"
-
-#command = []
-#command.append("f050/")
-#command.append("r000/")
-#command.append("f050/")
-#command.append("l000/")
-#command.append("f050/")
+pcWrap.startIPService()
+serWrap.startSerialService()
+btWrap.startBTService()
+print "BT, PC and Serial Connection UP..."
 
 #msg = ""
 
 #while(msg!="btstart"):
 #	msg = bt.read()
 
-msg = wifi.read()
+msg = pcWrap.read()
 
 msg="hey"
 while(msg!="btstart"):
-	msg = bt.read()
-	wifi.write(msg)
+	msg = btWrap.read()
+	pcWrap.write(msg)
 
 while 1:
 	#pc give command to arduino move
-	msg = wifi.read()
+	msg = pcWrap.read()
 	if (msg == "done/"):
 		break;
-	bt.write(msg)
-	ser.write(msg)
+	btWrap.write(msg)
+	serWrap.write(msg)
 
 	#arduino feed the sensor readings
-	msg2 = ser.read()
-	wifi.write(msg2)
-	bt.write(msg2)
+	msg2 = serWrap.read()
+	pcWrap.write(msg2)
+	btWrap.write(msg2)
 
 	msg="hey"
 while(msg!="btstart"):
-	msg = bt.read()
-	wifi.write(msg)
+	msg = btWrap.read()
+	pcWrap.write(msg)
 
 while 1:
 	#pc give command to arduino move
-	msg = wifi.read()
-	bt.write(msg)
-	ser.write(msg)
+	msg = pcWrap.read()
+	btWrap.write(msg)
+	serWrap.write(msg)
 
 	#arduino feed the sensor readings
-	msg2 = ser.read()
-	wifi.write(msg2)
-	bt.write(msg2)
+	msg2 = serWrap.read()
+	pcWrap.write(msg2)
+	btWrap.write(msg2)

@@ -11,11 +11,10 @@ class pcWrapper:
 		self.ipSocket.bind((self.tcp_ip, self.port))
 		self.pcaddr = None
 
-	def startIPService(self,ready2):
-			print "waiting for WIFI connection..."
-			self.pcaddr = self.ipSocket.recvfrom(1024)[1]
-			print "wifi link up"
-			ready2[0]=True
+	def startIPService(self):
+		print "waiting for WIFI connection..."
+		self.pcaddr = self.ipSocket.recvfrom(1024)[1]
+		print "wifi link up"
 
 	def stopIPService(self):
 		self.ipSocket.close()
@@ -23,7 +22,7 @@ class pcWrapper:
 	def write(self, msg):
 		self.ipSocket.sendto(msg, self.pcaddr)
 		#print "Write to PC: %s" %(msg)
-	
+
 	def read(self):
 			msg = self.ipSocket.recvfrom(1024)[0]
 			print "Read from PC: %s" % (msg)
