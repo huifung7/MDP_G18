@@ -24,7 +24,7 @@ print "BT, PC and Serial Connection UP..."
 msg = pcWrap.read()
 
 msg="hey"
-while(msg!="btstart"):
+while(msg!="START"):
 	msg = btWrap.read()
 	pcWrap.write(msg)
 
@@ -42,7 +42,7 @@ while 1:
 	btWrap.write(msg2)
 
 	msg="hey"
-while(msg!="btstart"):
+while(msg!="START"):
 	msg = btWrap.read()
 	pcWrap.write(msg)
 
